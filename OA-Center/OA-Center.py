@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import print_function
 from numpy import *
-import pycurl, StringIO, urllib, sys, re, datetime, time
+import pycurl, StringIO, urllib, sys, re, datetime, time, getpass
 
 EmployeeInfoUrl = "http://oa-center/Programs/KQ/EmployeeInfoStatistic.aspx";
 OAUrl = "http://oa-center/Programs/login/login.aspx";
@@ -123,6 +123,7 @@ def beginMakeMoney(arr, row):
             #实际加班终止时间戳
             stopDateTime = time.mktime(time.strptime(endTime, "%H:%M:%S"))
             startDateTime = time.mktime(time.strptime("18:50:00", "%H:%M:%S"))
+            actualTime = time.mktime(time.strptime("18:30:00", "%H:%M:%S"))
             # 判断是xx:30:xx 还是xx:00:xx
             normalTime = time.mktime(time.strptime("00:30:00", "%H:%M:%S"))
             hoildayStartDateTime = time.mktime(time.strptime(beginTime, "%H:%M:%S"))
@@ -138,21 +139,26 @@ def beginMakeMoney(arr, row):
             if isHoliday(date) == '0': # 上班日
                 if (stopDateTime - startDateTime) > 0: # 个人加班时间从六点五十开始
                     # =======================起始时间=======================
+                    total = (stopDateTime - hoildayStartDateTime)/3600 - 9.5
                     overTimeData.append(date)
                     overTimeData.append(date)
                     overTimeData.append("18:30")
                     overTimeData.append(__overTime)
+                    overTimeData.append(total)
             else: # 双休日或者法定节假日
                 if 0 < (hoildayStartDateTime - normalTime)/60%60 <=30:
                     temp = time.strftime("%H:%M:%S", time.localtime(int(str((hoildayStartDateTime - normalTime)/3600).split(".")[0]) * 3600 + normalTime))
                     __startTime = temp.split(":")[0] + ":" + temp.split(":")[1]
                 else:
-                    temp = time.strftime("%H:%M:%S", time.localtime(int(str((hoildayStartDateTime - normalTime)/3600).split(".")[0]) * 3600 + 3600 + normalTime))
+                    temp = time.strftime("%H:%M:%S", time.localtime(int(str((hoildayStartDateTime - normalTime)/3600).split(".")[0]) * 3600 - 1800 + normalTime))
                     __startTime = temp.split(":")[0] + ":" + temp.split(":")[1]
+
+                total = (stopDateTime - hoildayStartDateTime)/3600
                 overTimeData.append(date)
                 overTimeData.append(date)
                 overTimeData.append(__startTime)
                 overTimeData.append(__overTime)
+                overTimeData.append(total)
 
     DisplayYouGetMoney(overTimeData)
 
@@ -161,8 +167,12 @@ def Login(User, Pwd):
     Map = GetPageInputValue(GetHttp(OAUrl))
     Map["tbPassword"] = Pwd
     Map["tbUserName"] = User
-    # print (Map)
-    GetCookie(PostHttp(OAUrl, headList, urllib.urlencode(Map)))
+    loginInfo = PostHttp(OAUrl, headList, urllib.urlencode(Map))
+
+    if loginInfo.find("用户名或密码不正确") != -1:
+        print ('pwd or name error !!')
+        exit(1)
+    GetCookie(loginInfo)
 
 def GetEmployeeInfo():
     del headList[8]
@@ -199,22 +209,26 @@ def DisplayEmployeeInfo(info):
                         print ("     " + spanArray[i,j])
                     else:
                         print ("     " + spanArray[i,j], end = '        ')
-        print("\n==========================================================================================================================================================\n\n\n\n")
+        print("\n==========================================================================================================================================================\n\n")
         beginMakeMoney(spanArray, spanArrayRow)
 
 def DisplayYouGetMoney(data):
+    total = 0
     dataArray = array(data)
-    dataArrayRow = len(dataArray)/4
-    dataArray.shape = dataArrayRow,4
-    print ("========================================加班详情==========================================\n\n")
-    print ("        开始日期               结束日期             开始时间          结束时间\n")
+    dataArrayRow = len(dataArray)/5
+    dataArray.shape = dataArrayRow,5
+    print ("===============================================加班详情======================================================\n\n")
+    print ("        开始日期               结束日期             开始时间          结束时间         加班时长(h)\n")
     for i in xrange(dataArrayRow):
-        for j in xrange(4):
-            if j == 3:
-                print ("       " + dataArray[i,j])
+        for j in xrange(5):
+            if j == 4:
+                temp = str(dataArray[i,j])[0:6]
+                total = total + double(temp)
+                print ("       " + temp)
             else:
                 print ("       " + dataArray[i,j], end = '      ')
-    print ("\n=========================================================================================\n\n")
+    print ("\n      Not enough, keep working hard                                                      " + str(total)[0:6])
+    print ("\n============================================================================================================\n\n")
     PutMoneyInYourPocket(dataArray, dataArrayRow)
 
 def PutMoneyInYourPocket(arr, row):
@@ -248,10 +262,11 @@ def PutMoneyInYourPocket(arr, row):
         time.sleep(1)
 
 if __name__ == '__main__':
-    if not (len(sys.argv) == 3) :
-        print('param error exit!')
+    user = raw_input('please input you name:')
+    pwd = getpass.getpass('please input you pwd:')
+    if user == '' or pwd == '':
+        print ('name or pwd is empty !!')
         exit(1)
-    user = sys.argv[2]
-    pwd = sys.argv[1]
-    Login(pwd, user)
+
+    Login(user, pwd)
     GetEmployeeInfo()
