@@ -172,6 +172,9 @@ def Login(User, Pwd):
     if loginInfo.find("用户名或密码不正确") != -1:
         print ('pwd or name error !!')
         exit(1)
+    if loginInfo.find('密码已经过期，请先修改密码') != -1:
+        print ('密码已经过期，请先修改密码 !!')
+        exit(1)
     GetCookie(loginInfo)
 
 def GetEmployeeInfo():
