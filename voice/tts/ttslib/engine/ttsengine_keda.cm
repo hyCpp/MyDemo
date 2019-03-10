@@ -1,0 +1,88 @@
+SET(PRIVATE_TTS_C_FLAGS ${NAVI_GLOBAL_CFLAGS} "")
+SET(PRIVATE_TTS_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-std=c++11")
+SET(PRIVATE_TTS_LINK_FLAGS "")
+
+SET(PRIVATE_TTS_LINK_STATIC_LIBRARIES "") 
+
+SET(PRIVATE_TTS_LINK_SHARED_LIBRARIES 
+        "libcommonlib-navi"
+        "libaplcommon-navi"
+        "libvoicecomm-navi"
+        "libisstts.so")
+
+SET(PRIVATE_TTS_INC_LIST ${NAVI_BASE_INC}
+		"${USER_CONF_PROJECT_ROOT_DIR}/system/core/include/ncore"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/navicommon/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/commonlib/aplcommonlib/language"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/tts/ttslib/engine"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/tts/ttslib/engine/keda"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicecomm/publicinc"
+        "${USER_CONF_PROJECT_ROOT_DIR}/vendor/renesas/iflytek/dcu_e2/include")
+ 
+
+SET(PRIVATE_TTS_SRC_LIST  
+		"${USER_CONF_NAVILIB_SRC_DIR}/voice/tts/ttslib/engine/keda/TTS_EngineKeda.cpp"
+		)
+
+
+SET(PRIVATE_MODULE_NAME libttsenginekeda-navi)
+
+PROJECT (${PRIVATE_MODULE_NAME}) 
+
+#Clear the private var
+g_func_clear_private_var()
+
+#Set build flags and link libs
+SET(PRIVATE_MODULE_TYPE "SHARED")
+
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_TTS_C_FLAGS})
+SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_TTS_CXX_FLAGS})
+SET(PRIVATE_MODULE_LINK_FLAGS ${PRIVATE_TTS_LINK_FLAGS})
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_TTS_LINK_STATIC_LIBRARIES})
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_TTS_LINK_SHARED_LIBRARIES})
+
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_TTS_INC_LIST})
+
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_TTS_SRC_LIST})
+
+#Build this module
+g_func_build_module()
+
+
+#-------------------test module-----------------#
+SET(PRIVATE_MODULE_NAME libttsenginekeda-navi-test)
+
+PROJECT (${PRIVATE_MODULE_NAME}) 
+
+#Clear the private var
+g_func_clear_private_var()
+
+#Set build flags and link libs
+SET(PRIVATE_MODULE_TYPE "EXECUTABLE")
+
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_TTS_C_FLAGS} "-DTTS_UNIT_TEST")
+SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_TTS_CXX_FLAGS} -fprofile-arcs -ftest-coverage -D -fno-access-control)
+SET(PRIVATE_MODULE_LINK_FLAGS ${PRIVATE_TTS_LINK_FLAGS} -lgcov)
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_TTS_LINK_STATIC_LIBRARIES} "libgtest" "libgmock")
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_TTS_LINK_SHARED_LIBRARIES}
+	libttsenginekeda-navi)
+
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_TTS_INC_LIST}
+		"${USER_CONF_NAVILIB_SRC_DIR}/voice/tts/test"
+		"${USER_CONF_NAVILIB_SRC_DIR}/voice/tts/test/ttslib/engine"
+		"${USER_CONF_NAVILIB_SRC_DIR}/voice/tts/test/ttslib/engine/keda"
+		"${USER_CONF_NAVILIB_SRC_DIR}/voice/tts/ttslib/engine/keda"
+		"${USER_CONF_NAVILIB_SRC_DIR}/voice/tts/test/ttslib/engine/keda/groupinc"
+		"${USER_CONF_NAVILIB_SRC_DIR}/voice/voicecomm/"
+                "${USER_CONF_PROJECT_ROOT_DIR}/externals/googletest/include"
+                "${USER_CONF_PROJECT_ROOT_DIR}/externals/googlemock/include")
+
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_TTS_SRC_LIST}
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/tts/test/ttslib/engine/keda/ttsenginekeda_test.cpp"
+        #"${USER_CONF_NAVILIB_SRC_DIR}/voice/tts/test/ttslib/engine/keda/TTS_EngineKeda_test.cpp"
+		)
+
+#Build this module
+g_func_build_module()
+

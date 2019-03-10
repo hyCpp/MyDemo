@@ -1,0 +1,200 @@
+#-----------------------------------------------#
+#----------------thirdpart module---------------#
+#-----------------------------------------------#
+
+IF (LINUX_NATIVEX86_SHELL)
+    SET(PRIVATE_MODULE_NAME libpulse)
+    PROJECT (${PRIVATE_MODULE_NAME})
+    g_func_clear_private_var()
+    SET(PRIVATE_MODULE_TYPE "SHARED")
+    SET(PRIVATE_MODULE_IMPORT_PATH "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/alsa/pulselib/libpulse.so")
+    g_func_import_and_install_module()
+
+    SET(PRIVATE_MODULE_NAME libpulsecommon-8.0)
+    PROJECT (${PRIVATE_MODULE_NAME})
+    g_func_clear_private_var()
+    SET(PRIVATE_MODULE_TYPE "SHARED")
+    SET(PRIVATE_MODULE_IMPORT_PATH "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/alsa/pulselib/libpulsecommon.so")
+    g_func_import_and_install_module()
+
+    SET(PRIVATE_MODULE_NAME libpulsecore-8.0)
+    PROJECT (${PRIVATE_MODULE_NAME})
+    g_func_clear_private_var()
+    SET(PRIVATE_MODULE_TYPE "SHARED")
+    SET(PRIVATE_MODULE_IMPORT_PATH "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/alsa/pulselib/libpulsecore.so")
+    g_func_import_and_install_module()
+
+    SET(PRIVATE_MODULE_NAME libpulse-simple)
+    PROJECT (${PRIVATE_MODULE_NAME})
+    g_func_clear_private_var()
+    SET(PRIVATE_MODULE_TYPE "SHARED")
+    SET(PRIVATE_MODULE_IMPORT_PATH "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/alsa/pulselib/libpulse-simple.so")
+    g_func_import_and_install_module()
+ENDIF ()
+
+#-----------------------------------------------#
+#----------------voicecommm module--------------#
+#-----------------------------------------------#
+SET(PRIVATE_COMM_C_FLAGS ${NAVI_GLOBAL_CFLAGS} "")
+
+IF (NUTSHELL)
+    SET(PRIVATE_COMM_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-D _USE_VC_TTS_NATIVE" "-fno-exceptions -fvisibility=hidden")
+ELSEIF (LINUX_NATIVEX86_SHELL)
+    SET(PRIVATE_COMM_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-D _USE_VC_TTS_NATIVE -DHAVE_LINUX_NATIVEX86" "-fno-exceptions")
+ENDIF ()
+
+SET(PRIVATE_COMM_LINK_FLAGS "")
+SET(PRIVATE_COMM_LINK_STATIC_LIBRARIES "")
+
+#SET(PRIVATE_COMM_LINK_STATIC_LIBRARIES
+#    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicecomm/3rdlib/libaisound5.a")
+
+SET(PRIVATE_COMM_LINK_SHARED_LIBRARIES
+    "libtremolo-navi"
+    "libaplcommon-navi")
+
+IF (NUTSHELL)
+    SET(PRIVATE_COMM_LINK_SHARED_LIBRARIES ${PRIVATE_COMM_LINK_SHARED_LIBRARIES}
+        "libncore"
+        "libnmaudioclient")
+ELSEIF (LINUX_NATIVEX86_SHELL)
+    SET(PRIVATE_COMM_LINK_SHARED_LIBRARIES ${PRIVATE_COMM_LINK_SHARED_LIBRARIES}
+        "libpulse"
+        "libpulsecore-8.0"
+        "libpulsecommon-8.0"
+        "libpulse-simple")
+ENDIF ()
+
+SET(PRIVATE_COMM_INC_LIST ${NAVI_BASE_INC}
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/commonlib/aplcommonlib/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/tremolo"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/android"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/decoder"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/alsa")
+
+IF (NUTSHELL)
+   SET(PRIVATE_COMM_INC_LIST ${PRIVATE_COMM_INC_LIST}
+        "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/system/evip/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/externals/alsa-lib/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/externals/ZeroMQ/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/AudioService/include")
+ENDIF()
+
+SET(PRIVATE_COMM_SRC_LIST
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/VC_CommonIF.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/VC_AudioOutGeneral.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/VC_AudioInGeneral.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/VC_PlayerGeneral.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/VC_WavFile.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/VC_IAudioInFile.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/stdafx.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/decoder/VC_DecoderOgg.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/decoder/VC_DecEventOgg.cpp")
+
+SET(PRIVATE_COMM_SRC_LIST ${PRIVATE_COMM_SRC_LIST}
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/alsa/VC_AudioSessionAlsa.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/alsa/VC_IAudioInMedia.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/alsa/VC_Factory.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/alsa/VC_IAudioOutMedia.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/VC_WavFileWriter.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/VC_Log.cpp")
+
+IF (LINUX_NATIVEX86_SHELL)
+    SET(PRIVATE_COMM_SRC_LIST ${PRIVATE_COMM_SRC_LIST}
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/alsa/VC_AudioStream.cpp")
+ENDIF ()
+
+SET(PRIVATE_MODULE_NAME libvoicecomm-navi)
+PROJECT (${PRIVATE_MODULE_NAME})
+
+#CLEAR PRIVATE MODULE BUILD PARAMETER 
+g_func_clear_private_var()
+
+#SET BUILD TARGET TYPE
+SET(PRIVATE_MODULE_TYPE "SHARED")
+SET(PRIVATE_MODULE_EXPORT_SYMBOLS True)
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_COMM_C_FLAGS})
+SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_COMM_CXX_FLAGS})
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_COMM_LINK_STATIC_LIBRARIES})
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_COMM_LINK_SHARED_LIBRARIES})
+
+#ADD PRIVATE MODULE HEAD FILE AND SOURCE FILE
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_COMM_INC_LIST})
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_COMM_SRC_LIST})
+add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicecomm")
+
+#BUILD TARGET
+g_func_build_module()
+
+#-----------------------------------------------#
+#-------------------test module-----------------#
+#-----------------------------------------------#
+SET(PRIVATE_MODULE_NAME libvoicecomm-navi-test)
+
+PROJECT (${PRIVATE_MODULE_NAME})
+
+#Clear the private var
+g_func_clear_private_var()
+
+#Set build flags and link libs
+SET(PRIVATE_MODULE_TYPE "EXECUTABLE")
+
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_COMM_C_FLAGS})
+SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_COMM_CXX_FLAGS} -fprofile-arcs -ftest-coverage -fno-exceptions -D -fno-access-control)
+SET(PRIVATE_MODULE_LINK_FLAGS -std=gnu++11 -lgcov -ldl)
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_COMM_LINK_STATIC_LIBRARIES}  "libgtest" "libgmock")
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_COMM_LINK_SHARED_LIBRARIES}
+        "libvoicecomm-navi"
+        "libcutils")
+
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_COMM_INC_LIST}
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/tremolo"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/navicommon/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/aplcommonlib/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/decoder"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/decoder"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/alsa"
+        "${USER_CONF_PROJECT_ROOT_DIR}/externals/fff"
+        "${USER_CONF_PROJECT_ROOT_DIR}/externals"
+        "${USER_CONF_PROJECT_ROOT_DIR}/externals/ZeroMQ/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include/ncore"
+        "${USER_CONF_PROJECT_ROOT_DIR}/externals/alsa-lib/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/externals/googletest/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/externals/googlemock/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/framework/base/AppFramework/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/system/MediaLibrary/common/nvmost/include")
+
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_COMM_SRC_LIST}
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/voicecomm_test.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/VC_CommonIF_test.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/VC_PlayerGeneral_test.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/VC_AudioOutGeneral_test.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/VC_AudioInGeneral_test.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/VC_WavFile_test.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/VC_WavFileWriter_test.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/VC_IAudioInFile_test.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/VC_AudioBufferGeneral_test.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/VC_FileTest_fff.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/alsa/VC_Factory_test.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/alsa/VC_IAudioOutMedia_test.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/alsa/VC_IAudioInMedia_test.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/alsa/VC_AudioSessionAlsa_test.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/decoder/VC_DecEventOgg_test.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/decoder/VC_DecoderOgg_test.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/test/decoder/VC_DecoderOgg_test.cpp"
+        )
+
+#add headfiles
+add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicecomm")
+
+#add source group
+source_group_by_dir(PRIVATE_MODULE_SRC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicecomm")
+
+#Build this module
+g_func_build_module()

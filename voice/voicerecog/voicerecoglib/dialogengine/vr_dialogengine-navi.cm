@@ -1,0 +1,59 @@
+#include(${USER_CONF_NAVILIB_SRC_DIR}/externals/uscxml/uscxml-navi.cm)
+#include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/vr_dialogengine_suntec_nuance-navi.cm)
+#include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/vr_dialogengine_suntec_iflytek-navi.cm)
+#include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/voicebox/vr_dialogengine_vbt-navi.cm)
+#include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/bargein/vr_dialogengine_bargein-navi.cm)
+
+#TARGET COMPILE PARAMETER SETTING
+SET(PRIVATE_RECOG_C_FLAGS ${NAVI_GLOBAL_CFLAGS})
+SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-D_nix -fno-rtti -std=c++11")
+SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES)
+
+#SET SHARE LIBRARY DEPENDENT DECLARE
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES
+    "libaplcommon-navi"
+    "libvoicecomm-navi"
+    "libvr_configure-navi")
+
+SET(PRIVATE_RECOG_INC_LIST
+        ${NAVI_BASE_INC}
+        "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/pugixml"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/include"
+	    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/utility"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/asr/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/include/"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/include/"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/include")
+
+SET(PRIVATE_RECOG_SRC_LIST
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/VR_DialogEngineFactory.cpp")
+
+#CLEAR PRIVATE MODULE BUILD PARAMETER
+g_func_clear_private_var()
+
+SET(PRIVATE_MODULE_NAME libvr_dialogengine-navi)
+PROJECT (${PRIVATE_MODULE_NAME})
+
+SET(PRIVATE_MODULE_TYPE "STATIC")
+
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_RECOG_C_FLAGS})
+IF (NUTSHELL)
+    SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS})
+ELSEIF (LINUX_NATIVEX86_SHELL)
+    SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS} "-fPIC")
+ENDIF ()
+
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES})
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES})
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_RECOG_INC_LIST})
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_RECOG_SRC_LIST})
+
+#SET MAKEFILE HEADFILE AND SOURCE CODE PATH ADD IN
+add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine")
+
+#BUILD TARGET
+g_func_build_module()

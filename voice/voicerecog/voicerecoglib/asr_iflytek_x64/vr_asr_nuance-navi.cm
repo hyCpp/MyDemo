@@ -1,0 +1,283 @@
+#### PRIVATE_RECOG_C_FLAGS
+
+# ENGINE_FLAG = ALL, NUANCE, IFLYTEK
+SET (ENGINE_FLAG NUANCE)
+
+IF(ENGINE_FLAG MATCHES "NUANCE")
+    include(${USER_CONF_NAVILIB_SRC_DIR}/externals/expreval/expreval-navi.cm)
+ENDIF()
+
+SET(PRIVATE_RECOG_C_FLAGS ${NAVI_GLOBAL_CFLAGS} 
+    "-DIPC_MESSAGE_IMPL"
+    "-DCOMPILER_GCC_SMT"
+)
+
+#### PRIVATE_RECOG_CXX_FLAGS
+
+SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} 
+    "-Wno-non-virtual-dtor" 
+    "-std=c++11"
+)
+
+SET(PRIVATE_RECOG_CXX_FLAGS  ${PRIVATE_RECOG_CXX_FLAGS}  
+    "-D MACRO_Dynamic_Debug"
+    "-D MACRO_Windows_Debug"
+    "-D MACRO_Feature_Reserved"
+)
+
+IF(ENGINE_FLAG MATCHES "ALL")
+SET(PRIVATE_RECOG_CXX_FLAGS  ${PRIVATE_RECOG_CXX_FLAGS} 
+    "-D _NUANCE" 
+    "-D _IFLYTEK"
+)
+ELSEIF(ENGINE_FLAG MATCHES "NUANCE")
+SET(PRIVATE_RECOG_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS} 
+    "-D _NUANCE" 
+)
+ELSE()
+SET(PRIVATE_RECOG_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS} 
+    "-D _IFLYTEK"
+)
+ENDIF()
+
+if ((${USER_CONF_TARGET_PRODUCT} MATCHES "generic") OR (${USER_CONF_TARGET_DEVICE} MATCHES "simulator"))
+# emulator for gtest
+SET(PRIVATE_RECOG_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS} 
+    "-D _GTEST_EMULATOR"
+    # "-fno-exceptions"
+    # "-fno-rtti"
+)
+else ()
+SET(PRIVATE_RECOG_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS} 
+    "-fvisibility=hidden"
+)
+endif ()
+
+#### PRIVATE_RECOG_LINK_FLAGS
+
+SET(PRIVATE_RECOG_LINK_FLAGS "")
+
+#### PRIVATE_RECOG_LINK_SHARED_LIBRARIES
+
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES
+    "libcommonlib-navi"
+    "libaplcommon-navi"
+    "libvoicecomm-navi"
+    "libvr_configure-navi"
+)
+
+IF(ENGINE_FLAG MATCHES "ALL")
+
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES}
+    "libpugixml-navi"
+    "libexpreval-navi"
+    "libvocon3200_pron.so"
+    "libvocon3200_platform.so"
+    "libvocon3200_gram2.so"
+    "libvocon3200_base.so"
+    "libvocon3200_asr.so"
+    "libvocon_ext_stream.so"
+    "libvocon_ext_heap.so"
+    "libgenericdca.so"
+    "libisssr.so"
+    "libissauth.so"
+    "libiFlyNLI.so"
+    "liblsa.so"
+    "libivMAEKernel.so"
+)
+
+ELSEIF(ENGINE_FLAG MATCHES "IFLYTEK")
+
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES} 
+    "libisssr.so"
+    "libissauth.so"
+    "libiFlyNLI.so"
+    "liblsa.so"
+    "libivMAEKernel.so"
+)
+
+ELSE()
+
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES}
+    "libpugixml-navi"
+    "libexpreval-navi"
+    "libvocon3200_pron.so"
+    "libvocon3200_platform.so"
+    "libvocon3200_gram2.so"
+    "libvocon3200_base.so"
+    "libvocon3200_asr.so"
+    "libvocon_ext_stream.so"
+    "libvocon_ext_heap.so"
+    "libgenericdca.so"
+)
+
+ENDIF()
+
+
+#### PRIVATE_RECOG_INC_LIST
+
+SET(PRIVATE_RECOG_INC_LIST ${NAVI_BASE_CMN_INC}
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/navicommon/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/commonlib/aplcommonlib/include/"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/commonlib/commonlib/include/"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/expreval/src"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/pugixml"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/tinyxpath"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/rapidjson/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicecomm/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/utility"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/Common/PublicInc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/Common/Impl"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr_iflytek_x64/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr_iflytek_x64/impl"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/configure/include/"
+)
+
+IF(ENGINE_FLAG MATCHES "ALL")
+SET(PRIVATE_RECOG_INC_LIST ${PRIVATE_RECOG_INC_LIST}
+    "${USER_CONF_PROJECT_ROOT_DIR}/vendor/renesas/iflytek/dcu_e2/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/vendor/renesas/nuance/dcu_e2/VoConHybrid/include"
+)
+ELSEIF (ENGINE_FLAG MATCHES "NUANCE")
+SET(PRIVATE_RECOG_INC_LIST ${PRIVATE_RECOG_INC_LIST}
+    "${USER_CONF_PROJECT_ROOT_DIR}/vendor/renesas/nuance/dcu_e2/VoConHybrid/include"
+)
+ELSE()    
+SET(PRIVATE_RECOG_INC_LIST ${PRIVATE_RECOG_INC_LIST}
+    "${USER_CONF_PROJECT_ROOT_DIR}/vendor/renesas/iflytek/dcu_e2/include"
+)
+ENDIF()
+
+
+#### PRIVATE_RECOG_SRC_LIST
+
+SET(PRIVATE_RECOG_SRC_LIST_NUANCE
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Engine_Agent.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Engine_Base.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Event_Notify_Impl.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Event_Init_Notify_Impl.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Event_Phase_Impl.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Event_Result_Impl.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Event_Notify_Impl_Signal_Level.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Fn_Get_string_Line_Fixed.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Fn_Get_string_Path.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Fn_string.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Fn_Dir_File.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Log.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_Context.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_Context_Field.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_Context_Grammar.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_Context_List.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_Context_Spelling.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_Context_Userword.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_Context_In_Dialog.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_Dialog.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_Node_Result.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_Party.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_Rule.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_Tag.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Engine_Concrete.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Via_Shared_Engine_Concrete.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Fn_Callback_LH_Error.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Fn_Callback_LH_Rec_Advance.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Fn_Callback_LH_Rec_Event.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Fn_Get_ro_LH_AUDIOIN_INTERFACE.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Fn_Get_ro_LH_HEAP_INTERFACE.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Heap.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Mgr_Data.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Mgr_Rec.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Request_Data.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Result.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Thread_Data.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Thread_Rec.cpp" 
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_Context_Fuzzy.cpp" 
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_Context_Fuzzy_Host.cpp"     
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Fn_Callback_FuzzyMatchCtxCpl_Error.cpp" 
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Vocon.cpp" 
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Fn_Iostream.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Mock.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_CLC.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Data_Transcription.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Event_Notify_Impl_Context_File_Size.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Vocon_Fn_Callback_LH_Json_Error.cpp"
+)
+
+SET(PRIVATE_RECOG_SRC_LIST_IFLYTEK
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Fn_Get_string_Line_Fixed.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Fn_Get_string_Path.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Fn_Get_string_Path.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Log.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Fn_string.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Fn_Get_string_Path.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Event_Result_Impl.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Event_Phase_Impl.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Event_Notify_Impl.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Event_Init_Notify_Impl.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Event_Notify_Impl_Signal_Level.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Engine_Base.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Engine_Agent.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_IFlyTek_Engine_Concrete.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_IFlyTek_Mgr_Data.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_IFlyTek_Thread_Data.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_IFlyTek_Fn_Callback_Msg.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_IFlytek_IFlytek.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/asr/impl/Vr_Asr_Impl_Mock.cpp" 
+)
+
+
+IF(ENGINE_FLAG MATCHES "ALL")
+SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST_NUANCE} ${PRIVATE_RECOG_SRC_LIST_IFLYTEK})
+ELSEIF (ENGINE_FLAG MATCHES "NUANCE")
+SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST_NUANCE})
+ELSE()    
+SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST_IFLYTEK})
+ENDIF()
+
+#### PRIVATE_MODULE_NAME
+
+IF (ENGINE_FLAG MATCHES "ALL")
+
+SET(PRIVATE_MODULE_NAME libvr_asr-navi)
+
+ELSEIF (ENGINE_FLAG MATCHES "NUANCE")
+
+SET(PRIVATE_MODULE_NAME libvr_asr_nuance-navi)
+
+ELSE()
+
+SET(PRIVATE_MODULE_NAME libvr_asr_iflytek-navi)
+
+ENDIF()
+
+PROJECT (${PRIVATE_MODULE_NAME})
+
+#### Clear the private var
+
+g_func_clear_private_var()
+
+#### Set build flags and link libs
+
+SET(PRIVATE_MODULE_TYPE "SHARED")
+
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_RECOG_C_FLAGS})
+
+SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS})
+
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES})
+
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_RECOG_INC_LIST})
+
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_RECOG_SRC_LIST})
+
+#### add headfiles
+
+add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog")
+
+#### Build this module
+
+g_func_build_module()
+

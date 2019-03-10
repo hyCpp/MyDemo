@@ -1,0 +1,33 @@
+# avcunit test include list
+SET(PRIVATE_RECOG_INC_LIST_AVC ${PRIVATE_RECOG_INC_LIST_AVC}
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/AppFramework/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/handler/avcprotocol/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/protobuf/src"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/flatbuffers/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/eventsys/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/navicommon/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicecomm/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/utility"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/eventmanger/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/dialogmanger/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/dialogmanger/src/command/include/VR_CommandHandleIF.h"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/avcunit/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/test/voicerecoglib/avcunit"
+    )
+
+# avcunit test src list
+IF (USER_CONF_TARGET_PRODUCT MATCHES "meu")
+SET(PRIVATE_RECOG_SRC_LIST_AVC ${PRIVATE_RECOG_SRC_LIST_AVC}
+   "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/voicerecoglib/avcunit/src/VR_AvcUnit_VrUnit.cpp"
+   "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog/test/voicerecoglib/avcunit/VR_AvcUnit_VrUnitTest.cpp"
+    )
+ENDIF()
+
+# avcunit test static libs
+SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES}
+    "libvravcunit-navi"
+    )

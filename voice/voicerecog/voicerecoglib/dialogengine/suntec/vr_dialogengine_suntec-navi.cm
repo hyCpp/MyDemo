@@ -1,0 +1,152 @@
+
+IF (NUTSHELL)
+#    include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/asr_test/vr_asr_test-navi.cm)
+ELSEIF (LINUX_NATIVEX86_SHELL)
+#    include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/asr_iflytek_x64/vr_asr_iflytek-navi.cm)
+ENDIF ()
+#    include(${USER_CONF_NAVILIB_SRC_DIR}/externals/uscxml/uscxml-navi.cm)
+IF (LINUX_NATIVEX86_SHELL)
+#    include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/sqlcipher4VR.cm)
+ENDIF()
+
+SET(PRIVATE_RECOG_C_FLAGS ${NAVI_GLOBAL_CFLAGS}
+    "-DIPC_MESSAGE_IMPL"
+    "-DCOMPILER_GCC_SMT" "")
+SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-Wno-non-virtual-dtor -std=c++11 -fvisibility=hidden")#-fno-rtti 
+SET(PRIVATE_RECOG_LINK_FLAGS "")
+
+SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES
+    "libprotobufhelp-navi")
+
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES
+#    "libsqlcipher"
+    "libpugixml-navi"
+    "libaplcommon-navi"
+    "libvoicecomm-navi"
+#    "libvr_uscxml-navi"
+    "libvr_configure-navi"
+#    "libpcre"
+    )
+
+#IF (NUTSHELL)
+#    SET (PRIVATE_RECOG_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES}
+#        "libvr_asr_test-navi")
+#ELSEIF (LINUX_NATIVEX86_SHELL)
+#    SET (PRIVATE_RECOG_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES}
+#        "libvr_asr_iflytek-navi")
+#ENDIF ()
+
+SET(PRIVATE_RECOG_LINK_FLAGS ${PRIVATE_RECOG_LINK_FLAGS}
+    -lAVSCommon -lDefaultClient -lAuthDelegate -lMediaPlayer -lAlerts
+    -lSettings -lportaudio -lAudioResources -lSPHINX)
+
+SET(PRIVATE_RECOG_INC_LIST ${NAVI_BASE_INC}
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/expat/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/SystemServer/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/sort/SortingFramework/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/base/QtFramework"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/api/QtSystemAPI/include/nqsystem"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/libcurl/include/"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/icu4c/common"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/sqlcipher"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/rapidjson/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/pugixml"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/tinyxpath"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/rapidjson/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/navicommon/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/utility"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/agent/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/dataaccessor/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/mmvr/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/europe/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/europe/include/asrmanager"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/include/"
+#uscxml
+    #"${USER_CONF_PROJECT_ROOT_DIR}/externals/libxml2/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/expat/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/uscxml/"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/uscxml/uscxml/libsource/arabica/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/uscxml/uscxml/src/evws"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/uscxml/uscxml/plugins"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/uscxml/uscxml/src/jsmn"
+#event
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/include"
+#glog
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/uscxml/uscxml/libsource/glog/src"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/uscxml/uscxml/libsource/glog/gflags/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/uscxml/uscxml/libsource/glog/gflags/include/gflags"
+#AudioIn
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+#leveldb
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/leveldb/include"
+#pcre
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/pcre"
+
+#amazon
+
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/alexa/avs/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/alexa/portaudio/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/alexa/sqlite/usr/include"
+   # "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/alexa/gstreamer/gstreamer-core/src"
+   # "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/alexa/gstreamer/gstreamer-core/include/gstreamer-1.0"
+   # "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/alexa/gstreamer/gstreamer-base/include/gstreamer-1.0"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/alexa/gstreamer/include/gstreamer-2.0"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/alexa/glib/include/glib-2.0"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/alexa/glib/include"
+)
+
+SET(PRIVATE_RECOG_SRC_LIST
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/src/VR_DialogEngine.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/src/VR_MsgController.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/src/VR_AlexaEngine.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/src/VR_ConnectionObserver.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/src/VR_UIManager.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/src/VR_GuiRenderer.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/src/VR_KeywordObserver.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/src/VR_PortAudioMicWrapper.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/src/VR_InteractionManager.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/src/VR_ConsolePrinter.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/src/VR_XmlParser.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/src/VR_AlexaJSonParser.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/src/VR_AlexaImpl.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/src/VR_AlexaObserver.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/src/VR_VoiceBoxXmlBuilder.cpp"
+)
+
+link_directories(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/alexa/avs/lib)
+link_directories(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/alexa/portaudio/lib)
+
+SET(PRIVATE_MODULE_NAME libvr_dialogengine_suntec-navi)
+
+PROJECT (${PRIVATE_MODULE_NAME})
+
+#Clear the private var
+g_func_clear_private_var()
+
+#Set build flags and link libs
+SET(PRIVATE_MODULE_TYPE "SHARED")
+
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_RECOG_C_FLAGS})
+SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS})
+SET(PRIVATE_MODULE_LINK_FLAGS ${PRIVATE_RECOG_LINK_FLAGS})
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES})
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES})
+
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_RECOG_INC_LIST})
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_RECOG_SRC_LIST})
+
+#add headfiles
+add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicerecog")
+
+#Build this module
+g_func_build_module()

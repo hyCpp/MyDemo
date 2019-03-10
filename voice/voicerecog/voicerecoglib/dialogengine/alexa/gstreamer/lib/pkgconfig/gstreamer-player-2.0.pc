@@ -1,0 +1,12 @@
+prefix=/data/vendor/gstreamer
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/gstreamer-2.0
+
+Name: GStreamer Player
+Description: GStreamer Player convenience library
+Requires: gstreamer-2.0 gstreamer-video-2.0
+Version: 1.12.4
+Libs: -L${libdir} -lgstplayer-2.0
+Cflags: -I${includedir}
+

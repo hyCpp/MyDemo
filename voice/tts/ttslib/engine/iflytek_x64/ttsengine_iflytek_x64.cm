@@ -1,0 +1,57 @@
+#----------------------------------#
+#--------Thirdpart library---------#
+#----------------------------------#
+SET(PRIVATE_MODULE_NAME libiflytek-tts)
+PROJECT (${PRIVATE_MODULE_NAME})
+g_func_clear_private_var()
+SET(PRIVATE_MODULE_TYPE "SHARED")
+SET(PRIVATE_MODULE_IMPORT_PATH "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/engine/iflytek_x64/iflytek_tts_x64/libs/x64/libiflytek-tts.so")
+g_func_import_and_install_module()
+
+#----------------------------------#
+#----------tts-engine--------------#
+#----------------------------------#
+SET(PRIVATE_TTS_C_FLAGS ${NAVI_GLOBAL_CFLAGS} "")
+SET(PRIVATE_TTS_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-std=c++11")
+SET(PRIVATE_TTS_LINK_FLAGS "")
+
+SET(PRIVATE_TTS_LINK_SHARED_LIBRARIES 
+    "libiflytek-tts"
+    "libtiny-navi"
+    "libboost_system"
+    "libaplcommon-navi"
+    "libvoicecomm-navi")
+
+SET(PRIVATE_TTS_INC_LIST ${NAVI_BASE_INC}
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/tinyxpath/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/commonlib/aplcommonlib/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/engine"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/engine/iflytek_x64"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/engine/iflytek_x64/iflytek_tts_x64/include")
+
+SET(PRIVATE_TTS_SRC_LIST  
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/engine/iflytek_x64/TTS_EngineiFlytek.cpp")
+
+SET(PRIVATE_MODULE_NAME libttsengineiflytek-navi)
+PROJECT (${PRIVATE_MODULE_NAME}) 
+
+#CLEAR PRIVATE MODULE BUILD PARAMETER
+g_func_clear_private_var()
+
+#SET BUILD TARGET TYPE
+SET(PRIVATE_MODULE_TYPE "SHARED")
+
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_TTS_C_FLAGS})
+SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_TTS_CXX_FLAGS})
+SET(PRIVATE_MODULE_LINK_FLAGS ${PRIVATE_TTS_LINK_FLAGS})
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_TTS_LINK_STATIC_LIBRARIES})
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_TTS_LINK_SHARED_LIBRARIES})
+
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_TTS_INC_LIST})
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_TTS_SRC_LIST})
+
+#Build this module
+g_func_build_module()

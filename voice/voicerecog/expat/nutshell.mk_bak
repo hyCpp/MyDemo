@@ -1,0 +1,38 @@
+LOCAL_PATH:= $(call my-dir)
+
+#############################################
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := libexpat_static
+LOCAL_MODULE_TAGS := optional
+
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/lib
+
+LOCAL_SRC_FILES := \
+		lib/xmlparse.c \
+		lib/xmltok.c \
+		lib/xmlrole.c
+
+LOCAL_CFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes -fexceptions  -DHAVE_EXPAT_CONFIG_H
+
+include $(BUILD_STATIC_LIBRARY)
+#############################################
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := libexpat
+LOCAL_MODULE_TAGS := optional
+
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/lib
+
+LOCAL_SRC_FILES := \
+		xmlwf/xmlwf.c \
+		xmlwf/xmlfile.c \
+		xmlwf/codepage.c \
+		xmlwf/unixfilemap.c
+
+LOCAL_CFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes -fexceptions  -DHAVE_EXPAT_CONFIG_H
+
+LOCAL_STATIC_LIBRARIES := libexpat_static
+
+include $(BUILD_SHARED_LIBRARY)
+#############################################

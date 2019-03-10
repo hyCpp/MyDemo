@@ -1,0 +1,105 @@
+    include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/vr_configure-navi.cm)
+    include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/vr_eventsys-navi.cm)
+    include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/vr_dialog-navi.cm)
+    #include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/vr_dialogengine_suntec-navi.cm)
+    include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/vr_baidu_sds-navi.cm)
+    include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/vr_dialogengine_suntec_baidu-navi.cm)
+
+IF (NUTSHELL)
+    include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/stub/vr_stub-navi.cm)
+    #include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/vr_dialogengine_suntec-navi.cm)
+    #include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/vr_dialogengine_suntec_baidu-navi.cm)
+    #include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/avcunit/vr_avcunit-navi.cm)
+    #include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/voicerecog-navi-test.cm)
+    #include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/vr-de-suntec-navi-test.cm)
+ENDIF()
+
+
+
+#BUILD TARGET GCC COMPILE OPTIONS
+SET(PRIVATE_RECOG_C_FLAGS ${NAVI_GLOBAL_CFLAGS})
+IF (NUTSHELL)
+    SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-fno-rtti -std=c++11 -fvisibility=hidden -fPIC")
+ELSEIF (LINUX_NATIVEX86_SHELL)
+    SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-fno-rtti -std=c++11 -fPIC -DHAVE_LINUX_NATIVEX86")
+    add_definitions(-DHAVE_LINUX_NATIVEX86)
+ENDIF ()
+SET(PRIVATE_RECOG_LINK_FLAGS "")
+
+#VOICETAG COMPILE SPEC DEFINE ADD IN
+IF(USER_CONF_TARGET_PRODUCT MATCHES "meu_m2wL2BE")
+  add_definitions(-DCOMP_M2W_L2_VOICETAG)
+ELSEIF(USER_CONF_TARGET_PRODUCT MATCHES "meu_m2wT2BE")
+  add_definitions(-DCOMP_M2W_T2_VOICETAG)
+ELSEIF(USER_CONF_TARGET_PRODUCT MATCHES "imx_imx8x")
+  add_definitions(-DCOMP_IMX_IMX8X_VOICETAG)
+ENDIF()
+
+#STATIC LIBRARY DEPENDENT DECLARE
+SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES 
+    "libprotobufhelp-navi"
+    "libvoicerecog-eventsys-navi"
+    "libvoicerecog-dialogmanger-navi")
+
+SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES})
+
+#SHARE LIBRARY DEPENDENT DECLARE
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES)
+
+IF (NUTSHELL)
+    SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES}
+        "libvoicerecog-stub-navi"
+        "libmediamgrproxy")
+ENDIF()
+
+SET(PRIVATE_RECOG_INC_LIST ${NAVI_BASE_INC}
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/evip/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/protobuf/src"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/AppFramework/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/MediaProvider/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/api/idl-generated/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/base/AppFramework/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/service/media/MediaManager/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/navicommon/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/utility"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/asr/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/enginewrapper/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/include")
+
+SET(PRIVATE_RECOG_SRC_LIST
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/stdafx.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/VR_ModuleImp.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/VR_SourceManager.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/VR_ControllableNull.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/VR_Controller.cpp")
+
+#CLEAR MODULE BUILD PARAMETER
+g_func_clear_private_var()
+
+SET(PRIVATE_MODULE_NAME libvoicerecog-navi)
+PROJECT (${PRIVATE_MODULE_NAME})
+
+SET(PRIVATE_MODULE_TYPE "SHARED")
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_RECOG_C_FLAGS})
+SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS})
+SET(PRIVATE_MODULE_LINK_FLAGS ${PRIVATE_RECOG_LINK_FLAGS})
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES})
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES})
+
+#ADD HEADER FILE AND SOURCE CODE FILE PATH
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_RECOG_INC_LIST})
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_RECOG_SRC_LIST})
+add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog")
+
+#BUILD TARGET
+g_func_build_module()

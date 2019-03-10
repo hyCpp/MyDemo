@@ -1,0 +1,80 @@
+include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/voicerecoglib/eventmanager/voicerecog-eventmanager-test.cm)
+include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/voicerecoglib/dialogmanager/voicerecog-dialogmanager-test.cm)
+#include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/voicerecoglib/dialogengine/voicebox/voicerecog-dialogengine_vbt-test.cm)
+#include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/voicerecoglib/asr/vr_asr-navi-test.cm)
+#include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/voicerecoglib/avcunit/voicerecog-avcunit-test.cm)
+
+#-----------------test module ----------------#
+SET(PRIVATE_MODULE_NAME voicerecog-navi-test)
+
+PROJECT (${PRIVATE_MODULE_NAME})
+
+#Clear the private var
+g_func_clear_private_var()
+
+#Set build flags and link libs
+SET(PRIVATE_MODULE_TYPE "EXECUTABLE")
+
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_RECOG_C_FLAGS})
+SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS} "-D_nix -D_Linux -std=c++11 -w" -fprofile-arcs -ftest-coverage -fno-access-control)
+SET(PRIVATE_MODULE_LINK_FLAGS ${PRIVATE_RECOG_LINK_FLAGS} -lgcov)
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES} "libgtest" "libgmock")
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES} ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES_SUNTEC}
+  ############  "libcommonlib-navi"
+    "libeventsyscore-navi"
+    "libeventfactory-navi"
+    "libvoicecomm-navi"
+    "libncapp"
+    )
+
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_RECOG_INC_LIST} ${PRIVATE_RECOG_INC_LIST_SUNTEC}
+    ${PRIVATE_RECOG_INC_LIST_AVC}
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/eventsys/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/commonlib/aplcommonlib/include"
+     "${USER_CONF_NAVILIB_SRC_DIR}/base/commonlib/commonlib/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/googletest/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/vendor/renesas/alsa-lib/M2N/usr/include/alsa/"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/googlemock/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/src"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/sds"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/voicerecoglib/sds"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/avcunit/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/protobuf/src"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/flatbuffers/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/handler/avcprotocol/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/AppFramework/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/eventsys/include"
+#uscxml
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/libxml2/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/uscxml/libsource/arabica/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/uscxml/src/evws"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/uscxml/plugins"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/uscxml/src/jsmn"
+#event
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/uscxml/libsource/libevent/include"
+#glog
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/uscxml/libsource/glog/src"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/uscxml/libsource/glog/gflags/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/uscxml/libsource/glog/gflags/include/gflags"
+#AudioIn
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+#leveldb
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/leveldb/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/test"
+    )
+
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_RECOG_SRC_LIST} ${PRIVATE_RECOG_SRC_LIST_SUNTEC}
+    ${PRIVATE_RECOG_SRC_LIST_AVC}
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/voicerecoglib/voicerecoglib_test.cpp"
+
+#    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/voicerecoglib/avcunit/VR_AvcUnit_Test.cpp"
+    )
+
+#add headfiles
+add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog")
+
+#add source group
+source_group_by_dir(PRIVATE_MODULE_SRC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog")
+
+#Build this module
+g_func_build_module()

@@ -1,0 +1,175 @@
+SET(PRIVATE_RECOG_C_FLAGS ${NAVI_GLOBAL_CFLAGS})
+SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-D_nix -D_Linux -std=c++11")
+SET(PRIVATE_RECOG_LINK_FLAGS "")
+
+#SET STATIC LIBRARY DEPENDENT DECLARY
+SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES
+    "libprotobufhelp-navi")
+    
+IF (NUTSHELL)
+    SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES})
+ELSE()
+    SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES})
+ENDIF()
+
+#SET SHARE LIBRARY DEPENDENT DECLARY
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES
+    "libpugixml-navi"
+    "libvoicerecog-eventsys-navi"
+    "libvr_configure-navi"
+    )
+
+IF (NUTSHELL)
+    SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES}
+        "libncavmanager"
+        "libncdbhelper"
+        "libnccontentprovider"
+        "libnccontentresolver"
+        "libnmmediainfoprovider"
+        "libnmmediadataproviderif"
+        "libnmmediaprovider"
+        "libnccontentprovider"
+        "libsqlcipher"
+        "libevip"
+        "libncore"
+        "libutils"
+        "libncsystem"
+        "libNGResource"
+        "libNGBase")
+ELSE()
+    SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES}) 
+ENDIF()
+
+#DIFF PLATFORM DEPENDENT DECLARY
+IF(USER_CONF_TARGET_PRODUCT MATCHES "meu")
+    SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES})
+ELSE(USER_CONF_TARGET_PRODUCT MATCHES "dcu")
+    SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES})
+ENDIF()
+
+
+SET(PRIVATE_RECOG_INC_LIST
+    ${NAVI_BASE_INC}
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/eventsys/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/sqlcipher"
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/evip/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/handler/avcprotocol/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/protobuf/src"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/flatbuffers/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/policy/AVManager/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/MediaProvider/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/ContentProvider/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/DBHelper/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/SystemServer/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/VehicleServer/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/AppFramework/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/base/CompetePlayer/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/base/NGraphics/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/policy/AVManager/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/SystemServer/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/service/media/MediaIpod/globalID/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/service/BtService/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/pugixml"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/utility"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice//voicerecog/voicerecoglib/dialogmanger/src/dataprovider/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/avcunit/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/common"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/MediaProvider/MediaDataProvider"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/service/media/MediaCommon/include/"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/media/mediautils/include")
+
+
+SET(PRIVATE_RECOG_SRC_LIST "")
+
+IF (NUTSHELL)
+    SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST}
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_CommonTool.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_DataProvider.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_MusicListener.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_MusicDBHelper.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_MusicDBHelperManager.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_MusicDBHelper_Engine.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_MusicDBHelper_IPodIAP1.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_MusicDBHelper_IPodIAP2.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_MusicDBHelper_USBGeneral.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_AudioSourceListener.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_AudioSourceXMLBuilder.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_AudioSourceNameManager.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_RadioListener.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_RadioXMLBuilder.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_PhoneBookListener.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_PhoneBookXMLFormat.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_PB_XmlBuildHelper.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_PhoneBookStateListener.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_TslStateListener.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_DP_OBListener.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_DP_ThreadWorking.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_DP_OB_Action_Music.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_DP_OB_Action_AudioSource.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_DP_OB_Action_Radio.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_DP_OB_Action_Hfp.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_DP_OB_Action_HfpStatus.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_DP_OB_Action_TslStatus.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_DP_OB_Action.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_DP_OB_Action_TslAppList.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_DP_OB_Action_CityList.cpp"
+        )
+ELSE()
+    SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST}
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/VR_DataProvider_Mock.cpp")
+ENDIF() 
+
+IF (NUTSHELL)
+    SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST})
+ELSE()
+    SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST})
+ENDIF()
+
+IF(USER_CONF_TARGET_PRODUCT MATCHES "dcu")
+    SET(PRIVATE_RECOG_INC_LIST ${PRIVATE_RECOG_INC_LIST}
+        "${USER_CONF_PROJECT_ROOT_DIR}/framework/service/BtService/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/framework/service/Telephony/include")
+ELSE(USER_CONF_TARGET_PRODUCT MATCHES "meu")
+    SET(PRIVATE_RECOG_INC_LIST ${PRIVATE_RECOG_INC_LIST})
+ENDIF()
+
+#CLEAR COMPILE TARGET PRIVATE VALUE
+g_func_clear_private_var()
+
+SET(PRIVATE_MODULE_NAME libvr_dataprovider-navi)
+PROJECT (${PRIVATE_MODULE_NAME})
+
+#SET COMPILE TARGET TYPE
+SET(PRIVATE_MODULE_TYPE "STATIC")
+
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_RECOG_C_FLAGS})
+IF (NUTSHELL)
+    SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS})
+ELSE()
+    SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS} "-fPIC")
+ENDIF()
+SET(PRIVATE_MODULE_LINK_FLAGS ${PRIVATE_RECOG_LINK_FLAGS})
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES})
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES})
+
+#SET COMPILE TARGET HEADFILE AND SOURCE CODE ADD IN
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_RECOG_INC_LIST})
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_RECOG_SRC_LIST})
+add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/dialogmanger/src/dataprovider")
+
+#BUILD TARGET
+g_func_build_module()

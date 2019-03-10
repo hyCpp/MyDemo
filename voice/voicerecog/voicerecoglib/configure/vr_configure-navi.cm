@@ -1,0 +1,91 @@
+#TARGET COMPILE PARAMETER SETTING
+SET(PRIVATE_RECOG_C_FLAGS ${NAVI_GLOBAL_CFLAGS} "-DIPC_MESSAGE_IMPL" "-DCOMPILER_GCC_SMT" "")
+IF (NUTSHELL)
+    SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-Wno-non-virtual-dtor -std=c++11 -fvisibility=hidden")
+    SET(PRIVATE_RECOG_LINK_FLAGS "")
+ELSEIF (LINUX_NATIVEX86_SHELL)
+    SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-Wno-non-virtual-dtor -std=c++11 -DHAVE_LINUX_NATIVEX86")
+    SET(PRIVATE_RECOG_LINK_FLAGS "")
+ENDIF()
+
+#TARGET DEPENDENT STATIC LIBRARY DECLATRAION
+SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES "")
+
+#TARGET DEPENDENT SHARE LIBRARY DECLATRAION
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES "")
+
+IF (NUTSHELL)
+    SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES
+        "libaplcommon-navi"
+        "libpugixml-navi"
+        "libvoicecomm-navi"
+        "libnccontentprovider"
+        "libnccontentresolver"
+        "libncore"
+        "libncdbhelper"
+        "libcutils")
+ELSEIF (LINUX_NATIVEX86_SHELL)
+    SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES 
+        "libaplcommon-navi"
+        "libvoicecomm-navi"
+        "libboost_system"
+        "libboost_thread"
+        "libboost_iostreams")
+ENDIF()
+
+#TARGET HEADER FILE SEARCH PATH
+SET(PRIVATE_RECOG_INC_LIST ${NAVI_BASE_INC}
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/base/AppFramework/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/SystemServer/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/leveldb/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/SystemServer/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/DBHelper/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/ContentProvider/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/commonlib/aplcommonlib/include/"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/eventsys/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/navicommon/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/pugixml"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/protobuf/src"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/include/"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/include/"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/asr/publicinc"
+    )
+
+#TARGET SOURCE CODE FILE PATH
+SET(PRIVATE_RECOG_SRC_LIST "")
+
+IF (NUTSHELL) 
+    SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST}
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/src/VR_Configure.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/src/VR_ContentProvider.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/src/VR_AudioInSource.cpp")
+ELSEIF(LINUX_NATIVEX86_SHELL)
+    SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST}
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/src/VR_Configure_Mock.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/src/VR_AudioInSource.cpp")
+ENDIF()
+
+#CLEAR PRIVATE MODULE BUILD PARAMETER
+g_func_clear_private_var()
+
+SET(PRIVATE_MODULE_NAME libvr_configure-navi)
+PROJECT (${PRIVATE_MODULE_NAME})
+
+SET(PRIVATE_MODULE_TYPE "SHARED")
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_RECOG_C_FLAGS})
+SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS})
+SET(PRIVATE_MODULE_LINK_FLAGS ${PRIVATE_RECOG_LINK_FLAGS})
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES})
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES})
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_RECOG_INC_LIST})
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_RECOG_SRC_LIST})
+
+#TARGET HEADFILE AND SOURCE FILE SETTING
+add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog")
+
+#BUILD TARGET
+g_func_build_module()

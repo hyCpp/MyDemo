@@ -1,0 +1,12 @@
+prefix=/data/vendor/gstreamer
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/gstreamer-2.0
+
+Name: GStreamer MPEG-TS
+Description: GStreamer MPEG-TS support
+Requires: gstreamer-2.0 gstreamer-base-2.0
+Version: 1.12.4
+Libs: -L${libdir} -lgstmpegts-2.0
+Cflags: -I${includedir}
+

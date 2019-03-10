@@ -1,0 +1,62 @@
+#Clear the private var
+g_func_clear_private_var()
+
+SET(PRIVATE_MODULE_NAME libexpat_static4VR)
+
+PROJECT (${PRIVATE_MODULE_NAME})
+
+#Set build flags and link libs
+SET(PRIVATE_MODULE_TYPE "STATIC")
+
+SET(PRIVATE_MODULE_C_FLAGS "-Wall -Wmissing-prototypes -Wstrict-prototypes -fexceptions  -DHAVE_EXPAT_CONFIG_H -fPIC")
+
+#add include dir and src file
+SET(PRIVATE_MODULE_INC_LIST
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/expat/lib"
+)
+
+SET(PRIVATE_MODULE_SRC_LIST
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/expat/lib/xmlparse.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/expat/lib/xmltok.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/expat/lib/xmlrole.c"
+)
+
+#add headfiles
+# add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent")
+
+#Build this module
+g_func_build_module()
+# ===================================================================================
+#Clear the private var
+g_func_clear_private_var()
+
+SET(PRIVATE_MODULE_NAME libexpat4VR)
+
+PROJECT (${PRIVATE_MODULE_NAME})
+
+#Set build flags and link libs
+SET(PRIVATE_MODULE_TYPE "SHARED")
+
+SET(PRIVATE_MODULE_C_FLAGS "-Wall -Wmissing-prototypes -Wstrict-prototypes -fexceptions  -DHAVE_EXPAT_CONFIG_H")
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES
+    "libexpat_static4VR")
+
+message(test)
+
+#add include dir and src file
+SET(PRIVATE_MODULE_INC_LIST
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/expat/lib"
+)
+
+SET(PRIVATE_MODULE_SRC_LIST
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/expat/xmlwf/xmlwf.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/expat/xmlwf/xmlfile.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/expat/xmlwf/codepage.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/expat/xmlwf/unixfilemap.c"
+)
+
+#add headfiles
+# add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent")
+
+#Build this module
+g_func_build_module()

@@ -1,0 +1,71 @@
+SET(PRIVATE_MODULE_NAME libevent4VR)
+
+PROJECT (${PRIVATE_MODULE_NAME})
+
+#Clear the private var
+g_func_clear_private_var()
+
+#Set build flags and link libs
+SET(PRIVATE_MODULE_TYPE "SHARED")
+
+SET(PRIVATE_MODULE_C_FLAGS ${NAVI_GLOBAL_CFLAGS} "-D_GNU_SOURCE" "-DHAVE_CONFIG_H" "-fPIC" "-Wall" "-fvisibility=default")
+
+SET(PRIVATE_MODULE_LINK_FLAGS "-ldl" "-lpthread")
+
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES
+    "libssl"
+)
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES
+    "libcrypto"
+    "libz"
+)
+
+SET(ZLIB_PRIVATE_PATH "${ZLIB_INCLUDE_DIRS}")
+SET(OPENSSL_PRIVATE_PATH "${OPENSSL_INCLUDE_DIR}")
+
+message(test begin)
+message( openssl path is ${OPENSSL_PRIVATE_PATH})
+message( zlib path is ${ZLIB_PRIVATE_PATH})
+
+#add include dir and src file
+SET(PRIVATE_MODULE_INC_LIST
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/include/event2"
+    "${OPENSSL_PRIVATE_PATH}"
+    "${ZLIB_PRIVATE_PATH}"
+)
+
+SET(PRIVATE_MODULE_SRC_LIST
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/buffer.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/bufferevent.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/bufferevent_filter.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/bufferevent_openssl.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/bufferevent_pair.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/bufferevent_ratelim.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/bufferevent_sock.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/epoll.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/epoll_sub.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/evdns.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/event.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/event_tagging.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/evmap.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/evrpc.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/evthread.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/evthread_pthread.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/evutil.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/evutil_rand.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/http.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/listener.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/log.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/poll.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/select.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/signal.c"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent/strlcpy.c"
+)
+
+#add headfiles
+add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/libevent")
+
+#Build this module
+g_func_build_module()

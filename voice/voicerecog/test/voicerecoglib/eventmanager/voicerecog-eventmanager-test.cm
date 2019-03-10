@@ -1,0 +1,41 @@
+SET(PRIVATE_RECOG_C_FLAGS ${NAVI_GLOBAL_CFLAGS})
+SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-D_nix -D_Linux -std=c++11")
+SET(PRIVATE_RECOG_LINK_FLAGS "")
+
+#depend on event manger libaray
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES}
+    "libpugixml-navi"
+    "libncore"
+    "libncdbhelper"
+    "libnccontentresolver"
+    "libnccontentprovider"
+    "libvoicecomm-navi"
+    "libvr_configure-navi"
+    )
+
+SET(PRIVATE_RECOG_INC_LIST ${PRIVATE_RECOG_INC_LIST}
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/DBHelper/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/ContentProvider/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/SystemServer/include/"
+    "${USER_CONF_PROJECT_ROOT_DIR}//platform/policy/AVManager/include/"
+
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/pugixml"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/tutorial/include"
+    )
+
+SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST}
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/tutorial/VR_NCTutorialInfoDatabaseHelper.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/tutorial/VR_NCTutorialInfoProvider.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/tutorial/VR_NCTutorialXMLBuilder.cpp"
+    # "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/tutorial/VR_NCTutorialManager.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/voicerecoglib/eventmanager/tutorial/VR_NCTutorialInfoDatabaseHelper_Test.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/voicerecoglib/eventmanager/tutorial/VR_NCTutorialInfoProvider_Test.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/voicerecoglib/eventmanager/tutorial/VR_NCTutorialXMLBuilder_Test.cpp"
+    # "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/voicerecoglib/eventmanager/tutorial/VR_NCTutorialManager_Test.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/test/voicerecoglib/eventmanager/tutorial/VR_NCTutorialHelp.cpp"
+    )

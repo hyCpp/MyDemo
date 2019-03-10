@@ -1,0 +1,121 @@
+#------------------------------------#
+#---------------tts-navi-------------#
+#------------------------------------#
+IF (LINUX_NATIVEX86_SHELL)
+include (${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/engine/iflytek_x64/ttsengine_iflytek_x64.cm)
+ENDIF ()
+
+SET(PRIVATE_TTS_C_FLAGS ${NAVI_GLOBAL_CFLAGS} "")
+
+IF (NUTSHELL)
+SET(PRIVATE_TTS_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-fvisibility=hidden -std=gnu++11")
+ELSE (LINUX_NATIVEX86_SHELL)
+SET(PRIVATE_TTS_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-std=gnu++11 -DHAVE_LINUX_NATIVEX86 -DNDEBUG")
+ENDIF ()
+
+SET(PRIVATE_TTS_LINK_FLAGS "")
+SET(PRIVATE_TTS_LINK_STATIC_LIBRARIES "")
+
+SET(PRIVATE_TTS_LINK_SHARED_LIBRARIES 
+    "libtiny-navi"
+    "libeventsyscore-navi"
+    "libeventfactory-navi"
+    "libaplcommon-navi"
+    "libvoicecomm-navi"
+    "libttsstub")
+
+IF (NUTSHELL)
+    SET(PRIVATE_TTS_LINK_SHARED_LIBRARIES ${PRIVATE_TTS_LINK_SHARED_LIBRARIES}
+        "libutils"        
+        "libcutils"
+        "libncprocess"
+        "libncservice"
+        "libevipservice"
+        "libevipprocess")
+ENDIF ()
+
+IF(USER_CONF_TARGET_PRODUCT MATCHES "meu")
+  add_definitions(-DTARGET_PRODUCT_MEU)
+ENDIF()
+
+SET(PRIVATE_TTS_INC_LIST ${NAVI_BASE_INC}
+        "${USER_CONF_PROJECT_ROOT_DIR}/externals/protobuf/src"
+        "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include/ncore"
+        "${USER_CONF_PROJECT_ROOT_DIR}/framework/base/AppFramework/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/SystemServer/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/ContentProvider/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/DBHelper/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/AppFramework/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/framework/api/idl-generated/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/framework/api/idl-generated/include/tts"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/tinyxpath/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/commonlib/ftestlib/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/commonlib/aplcommonlib/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/commonlib/aplcommonlib/language"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/eventsys/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/navicommon/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/engine"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/engine/keda"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/engine/keda/groupinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/stub/voice/tts"
+        "${USER_CONF_NAVILIB_SRC_DIR}/tests/functiontest/modules/voice/TTS")
+
+SET(PRIVATE_TTS_SRC_LIST  
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/TTS_ModuleIF.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/TTS_ReceiverCb.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/stdafx.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/engine/TTS_Engine.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_EventStopReq.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_EventPlaylist.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_EventPlayEnd.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_EventPauseReq.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_EventResumeReq.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_IF.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_PlayElementBase.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_PlayElementSilence.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_PlayElementSoundName.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_PlayElementText.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_Controler.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_PlayThread.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_AudioOutThread.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_TextToSpeechImpl.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_Thread.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_PlaylistInfo.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_PlaylistInfoManager.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_WaveFile.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_EngineManager.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/TTS_ConfigIF.cpp"
+       #"${USER_CONF_NAVILIB_SRC_DIR}/voice/tts/ttslib/TTS_TuningManager.cpp"
+       #"${USER_CONF_NAVILIB_SRC_DIR}/voice/tts/ttslib/TTS_TextToSpeechProperty.cpp"
+       #"${USER_CONF_NAVILIB_SRC_DIR}/voice/tts/ttslib/TTS_EventRegisterTuningDataReq.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/stub/voice/tts/TtsService.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/stub/voice/tts/TtsStubImpl.cpp"
+        )
+
+SET(PRIVATE_MODULE_NAME libtts-navi)
+PROJECT (${PRIVATE_MODULE_NAME}) 
+
+#CLEAR PRIVATE MODULE BUILD PARAMETER
+g_func_clear_private_var()
+
+#BUILD TARGET TYPE
+SET(PRIVATE_MODULE_TYPE "SHARED")
+
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_TTS_C_FLAGS})
+SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_TTS_CXX_FLAGS})
+SET(PRIVATE_MODULE_LINK_FLAGS ${PRIVATE_TTS_LINK_FLAGS})
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_TTS_LINK_STATIC_LIBRARIES})
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_TTS_LINK_SHARED_LIBRARIES})
+
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_TTS_INC_LIST})
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_TTS_SRC_LIST})
+
+#BUILD TARGET
+g_func_build_module()
+

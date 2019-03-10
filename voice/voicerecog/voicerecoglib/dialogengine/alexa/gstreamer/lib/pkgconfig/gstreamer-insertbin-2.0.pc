@@ -1,0 +1,12 @@
+prefix=/data/vendor/gstreamer
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/gstreamer-2.0
+
+Name: GStreamer Insert Bin
+Description: Bin to automatically and insertally link elements
+Requires: gstreamer-2.0
+Version: 1.12.4
+Libs: -L${libdir} -lgstinsertbin-2.0
+Cflags: -I${includedir}
+

@@ -1,0 +1,50 @@
+SET(PRIVATE_TTS_C_FLAGS ${NAVI_GLOBAL_CFLAGS} "")
+SET(PRIVATE_TTS_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-std=c++11")
+SET(PRIVATE_TTS_LINK_FLAGS "")
+SET(PRIVATE_TTS_LINK_STATIC_LIBRARIES "${USER_CONF_PROJECT_ROOT_DIR}/vendor/renesas/flite/rcar_m3muifa/lib/libflite_cmu_us_rms.so"
+										  "${USER_CONF_PROJECT_ROOT_DIR}/vendor/renesas/flite/rcar_m3muifa/lib/libflite_usenglish.so"
+										  "${USER_CONF_PROJECT_ROOT_DIR}/vendor/renesas/flite/rcar_m3muifa/lib/libflite_cmulex.so"
+										  "${USER_CONF_PROJECT_ROOT_DIR}/vendor/renesas/flite/rcar_m3muifa/lib/libflite.so")
+									   
+SET(PRIVATE_TTS_LINK_SHARED_LIBRARIES 
+        "libaplcommon-navi"
+        "libvoicecomm-navi")
+
+SET(PRIVATE_TTS_INC_LIST ${NAVI_BASE_INC}
+		"${USER_CONF_PROJECT_ROOT_DIR}/system/core/include/ncore"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/navicommon/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/commonlib/aplcommonlib/language"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/engine"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/engine/nuance"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+        "${USER_CONF_PROJECT_ROOT_DIR}/vendor/renesas/flite/rcar_m3muifa/include")
+ 
+
+SET(PRIVATE_TTS_SRC_LIST  
+		"${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/tts/ttslib/engine/flite/TTS_EngineFlite.cpp")
+
+
+SET(PRIVATE_MODULE_NAME libttsengineflite-navi)
+
+PROJECT (${PRIVATE_MODULE_NAME}) 
+
+#Clear the private var
+g_func_clear_private_var()
+
+#Set build flags and link libs
+SET(PRIVATE_MODULE_TYPE "SHARED")
+
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_TTS_C_FLAGS})
+SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_TTS_CXX_FLAGS})
+SET(PRIVATE_MODULE_LINK_FLAGS ${PRIVATE_TTS_LINK_FLAGS})
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_TTS_LINK_STATIC_LIBRARIES})
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_TTS_LINK_SHARED_LIBRARIES})
+
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_TTS_INC_LIST})
+
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_TTS_SRC_LIST})
+
+#Build this module
+g_func_build_module()

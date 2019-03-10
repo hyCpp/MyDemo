@@ -1,0 +1,124 @@
+SET(PRIVATE_RECOG_C_FLAGS ${NAVI_GLOBAL_CFLAGS})
+if ((${USER_CONF_TARGET_PRODUCT} MATCHES "generic") OR (${USER_CONF_TARGET_DEVICE} MATCHES "simulator"))
+SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-D_nix -D_Linux -fno-rtti -std=c++11")
+else ()
+SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-std=c++11 -fvisibility=hidden")
+endif ()
+SET(PRIVATE_RECOG_LINK_FLAGS "")
+
+##
+SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES
+    )
+SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES}
+    )
+
+##
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES
+    "libpugixml-navi"
+    "libvr_configure-navi"
+    "libsqlcipher"
+    "libdataengine-navi"
+    "libwebproxy-navi"
+    "libtiny-navi"
+    "libcurl"
+    )
+
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES}
+    )
+
+SET(PRIVATE_RECOG_LINK_FLAGS ${PRIVATE_RECOG_LINK_FLAGS}
+   -lcurl -lssl -lcrypto -ljsoncpp -lsphinxSpeechDetector)
+
+SET(PRIVATE_RECOG_INC_LIST ${NAVI_BASE_INC}
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voicecomm/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/pugixml"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/libcurl/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/tinyxpath/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/dataengine/DspLib/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/webproxy/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/commonlib/aplcommonlib/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/utility"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/baidu_sdk"
+        #"${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/baidu_sdk/json"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/baidu_sdk/base"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/sphinx_sdk/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/sphinx_sdk/include/observerInterface"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec/dataaccessor/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/voicebox/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/vendor/renesas/voicebox/dcu_e2/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/vendor/renesas/voicebox/dcu_e2/include/posix"
+        "${USER_CONF_PROJECT_ROOT_DIR}/vendor/renesas/voicebox/dcu_e2/include/data"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/include/"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+        "${USER_CONF_PROJECT_ROOT_DIR}/externals/leveldb/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/externals/libcurl/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/vendor/renesas/genivi/openssl/M3/usr/include"
+        #"${USER_CONF_PROJECT_ROOT_DIR}/externals/rapidjson/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/rapidjson/include"
+        )
+
+SET(PRIVATE_RECOG_SRC_LIST
+    # "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/src/VR_DialogEngineServer.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/src/VR_Platform.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/src/VR_RequestServerDialog.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/src/VR_SDSController.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/sds/src/VR_SDSAbstractState.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/sds/src/VR_SDSEvent.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/sds/src/VR_SDSParserBase.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/sds/src/VR_SDSParserConcrete.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/sds/src/VR_SDSRequestServer.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/sds/src/VR_SDSStateBase.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/sds/src/VR_SDSStateConcrete.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/sds/src/VR_SDSStateMachine.cpp" 
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/sds/src/VR_SDSStateManager.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/baidu_sdk/base/VR_base64.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/baidu_sdk/base/VR_utils.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/src/VR_BaiduAudioInStreamer.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/src/VR_BaiduSDS.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/src/VR_BaiduImpl.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/src/VR_HttpClient.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/src/VR_SpeechCommandObserver.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/src/VR_VoiceBoxXmlBuilder.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/src/VR_MsgController.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/src/VR_XmlParser.cpp"
+)
+
+link_directories(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/sphinx_sdk/lib)
+link_directories(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/baidu_sds/baidu_sdk/lib)
+
+SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST}
+    )
+
+SET(PRIVATE_MODULE_NAME libvr_baidu_sds-navi)
+
+PROJECT (${PRIVATE_MODULE_NAME})
+
+#Clear the private var
+g_func_clear_private_var()
+
+#Set build flags and link libs
+SET(PRIVATE_MODULE_TYPE "SHARED")
+
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_RECOG_C_FLAGS})
+SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS})
+SET(PRIVATE_MODULE_LINK_FLAGS ${PRIVATE_RECOG_LINK_FLAGS})
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES})
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES})
+
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_RECOG_INC_LIST})
+
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_RECOG_SRC_LIST})
+
+#add headfiles
+add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine")
+
+#Build this module
+g_func_build_module()

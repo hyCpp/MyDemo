@@ -1,0 +1,256 @@
+include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/vr_dataprovider-navi.cm)
+include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/vr_dialogengine-navi.cm)
+
+IF (NUTSHELL)
+include(${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/testphoneinfo/TestPhoneInfo.cm)
+ENDIF()
+
+#BUILD TARGET GCC COMPILE OPTION
+SET(PRIVATE_RECOG_C_FLAGS ${NAVI_GLOBAL_CFLAGS})
+IF (NUTSHELL)
+    SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-D_nix -D_Linux -std=c++11")
+ELSEIF (LINUX_NATIVEX86_SHELL)
+    SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-D_nix -D_Linux -std=c++11 -DHAVE_LINUX_NATIVEX86")
+ENDIF ()
+SET(PRIVATE_RECOG_LINK_FLAGS "")
+
+#STATIC LIBRARY DEPENDENT DECLARE
+SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES
+    "libvoicerecog-eventsys-navi"
+    "libvr_dialogengine-navi"
+    "libvr_dataprovider-navi"
+    "libprotobufhelp-navi")
+
+IF (NUTSHELL)
+    SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES}
+        "libsystemproto"
+        "libnicommuproto"
+        "libnivehicleproto"
+        "libdataengine-navi")
+ENDIF()
+
+#SHARE LIBRARY DEPENDENT DECLARE
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES
+    "libpugixml-navi"
+    "libvr_configure-navi"
+    "libeventfactory-navi")
+
+IF (NUTSHELL)
+    SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES}
+        "libevip"
+        "libncore"
+        "libutils"
+        "libcutils"
+        "libnievip"
+        "libbinder"
+        "libncsystem"
+        "libncdbhelper"
+        "libmediaproxy"
+        "libncavmanager"
+        "libncvehicleinfo"
+        "libncsystemservice"
+        "libncsettingservice"
+        "libnccontentprovider"
+        "libnccontentprovider"
+        "libnccontentresolver"
+        "libncbtsettingproxy"
+        "libnmmediainfoprovider"
+        "libnmmediadataproviderif"
+        "libdrvinfoproxy")
+ENDIF()
+
+SET(PRIVATE_RECOG_INC_LIST ${NAVI_BASE_INC} ${NAVI_BASE_DATAENGINE_INC}
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/evip/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/base/AppFramework/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/protobuf/src"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/navi/externals/rapidjson/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/policy/AVManager/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/MediaProvider/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/ContentProvider/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/DBHelper/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/SystemServer/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/AppFramework/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/ServiceManager/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/SystemServer/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/VehicleServer/include/"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/AppFramework/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/AudioService/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/api/idl-generated/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/api/AppFramework/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/MediaProvider/MediaDataProvider"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/service/media/MediaCommon/include/"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/service/DrivingAssistant/drvinfoservice/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/navi/base/dataengine/DspLib/publicinc"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/media/mediautils/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/pugixml"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/protofiles"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/eventsys/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/utility"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/utility/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/tutorial/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogengine/suntec"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider/include")
+
+
+IF(USER_CONF_TARGET_DEVICE MATCHES "m3muifa")
+SET(PRIVATE_RECOG_INC_LIST
+    ${PRIVATE_RECOG_INC_LIST}
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/common/m3muifa")
+ELSE(USER_CONF_TARGET_DEVICE MATCHES "m3wukong")
+SET(PRIVATE_RECOG_INC_LIST
+    ${PRIVATE_RECOG_INC_LIST}
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/common/m3wukong")
+ENDIF()
+
+
+SET(PRIVATE_RECOG_SRC_LIST
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_CommonTool.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_XmlStrParse.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_DialogManger.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_ActionManger.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_MessageProcess.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_DialogManger_Null.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_UIStartingCondition.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_DM_CommandHandle.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_DailogEngineMessageBuilder.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_RecogTask.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_TaskQueue.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_TaskFactoryIF.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_TaskFactory.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_DialogTaskBase.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_GViewerProxyBase.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_RecogTaskState.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_VoiceRecogStatus.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_StartServiceBase.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_StartServiceHandler.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_MusicSpotLightUpdater.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_SpotlightSearchTask.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_WeatherDataServiceBase.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/MMVR_RecogTaskState.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/SDLVR_RecogTaskState.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_NaviStatusManager.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_TunerStatusManager.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_VehicleInfoHelper.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_VehicleInfoAgent.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_VehicleInfoManager.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_VehicleInfoReplier.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_ActionEventSender.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_ActionBase.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_ActionFactory.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_ActionFactoryIF.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_InfoActionFactory.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_RequestQueue.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_StartFinishNotifyAction.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_Command.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_Request.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_CommandFactory.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_RequestCommonProperty.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_Message.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_MessageLoopBack.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_MessageSessionClosed.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_MessageNotifyUICrash.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_ReplyActoinResult.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_ReqestStartChangeLanguage.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_ReqestVrPVRFlag.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_ReqestVrSettingState.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_MessageSpotLightSearch.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_ReqestVrTsl.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_ReqestVrVoiceTag.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_RequestDialog.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_RequestSession.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/SDLVR_RequestCommonProperty.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/MMVR_RequestCommonProperty.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_NaviStatusUpdate.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_RespCategorySearchInfo.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_RequestVriAutoProxy.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_NaviMessageHandler.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_XmlGenerate.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_SMSHandler.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_NaviInfoMessageResp.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/VR_LocInfoUpdate.cpp")
+
+IF (NUTSHELL)
+    SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST}
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_UserManager.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_CMResourceHelper.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_CMInfoManager.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_SessionManger.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/MMVR_CommandSet.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_RunableThread.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_StockInfoHelper.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_StockInfoManager.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_VoiceTslApp.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_VoiceTagTTS.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_DictationTask.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_NIMusicNodeItem.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_VehicleMotion.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_NIMusicShareProxy.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_VoiceTagAction.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_ActionTtsPlay.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_ActionTtsStop.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_ActionBeepPlay.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_ActionBeepStop.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_RadioInfoAction.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_AppsStartAction.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_SmartAgentPrompt.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_ActionTtsListPlay.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_ActionTtsListStop.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_NIMusicShareReplier.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_RadioTuningAction.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_EngineStatusAction.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_NuanceActionAdaptor.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_DictationStatusCheck.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/testphoneinfo/VR_NCPhoneInfoProvider.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_DebugRecorderEventHandler_Null.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/VR_RadioActiveBandInfoAction.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/testphoneinfo/VR_NCPhoneInfoDatabaseHelper.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_JsonParse.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_NCDrvInfoProxy.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_NCDrvInfoReplier.cpp")
+ELSEIF (LINUX_NATIVEX86_SHELL)
+    SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST}
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_SessionManger_Mock.cpp"
+       "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/task/VR_NIMusicShareProxy_Mock.cpp")
+ENDIF()
+
+#CLEAR PRIVATE MODULE BUILD PARAMETER
+g_func_clear_private_var()
+
+SET(PRIVATE_MODULE_NAME libvoicerecog-dialogmanger-navi)
+PROJECT (${PRIVATE_MODULE_NAME})
+
+SET(PRIVATE_MODULE_TYPE "STATIC")
+
+IF (NUTSHELL)
+    SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS})
+ELSEIF (LINUX_NATIVEX86_SHELL)
+    SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS} "-fPIC")
+ENDIF()
+
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_RECOG_C_FLAGS})
+SET(PRIVATE_MODULE_LINK_FLAGS ${PRIVATE_RECOG_LINK_FLAGS})
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES})
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES})
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_RECOG_INC_LIST})
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_RECOG_SRC_LIST})
+
+#PROJECT HEADFIEL AND SOURCE CODE ADD IN
+add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/dialogmanger")
+
+#BUILD TARGET
+g_func_build_module()

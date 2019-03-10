@@ -1,0 +1,134 @@
+SET(PRIVATE_RECOG_C_FLAGS ${NAVI_GLOBAL_CFLAGS} 
+    "-DIPC_MESSAGE_IMPL"
+    "-DCOMPILER_GCC_SMT" "")
+SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} )
+SET(PRIVATE_RECOG_LINK_FLAGS "")
+
+##
+##
+SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES 
+    "libprotobufhelp-navi")
+IF(USER_CONF_TARGET_PRODUCT MATCHES "android")
+ELSE()
+SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES}
+    #"libprotosrc"
+    )
+ENDIF()
+
+## 
+##
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES
+####    "libcommonlib-navi"
+    "libeventsyscore-navi"
+    "libeventfactory-navi"
+    "libaplcommon-navi"
+    "libevipservice"
+    "libvoicestub"
+    "libutils"
+    "libncservice"
+    "libcutils"
+    "libncprocess"
+    "libevipprocess"
+    "libncdbhelper"
+    "libnccontentprovider"
+    "libvoicecomm-navi"
+    )
+IF(USER_CONF_TARGET_PRODUCT MATCHES "android")
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES}
+    "libprotobuf-navi"
+    )
+ELSE()
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES}
+    "libprotobuf"
+    )
+ENDIF()
+
+
+SET(PRIVATE_RECOG_INC_LIST ${NAVI_BASE_INC}
+	"${USER_CONF_PROJECT_ROOT_DIR}/framework/base/QtFramework"
+	"${USER_CONF_PROJECT_ROOT_DIR}/framework/api/QtSystemAPI/include/nqsystem"
+        "${USER_CONF_PROJECT_ROOT_DIR}/framework/api/QtSystemAPI/include/nqwifi"
+        "${USER_CONF_PROJECT_ROOT_DIR}/framework/base/AppFramework/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/framework/base/ContentProvider/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/externals/protobuf/src"
+        "${USER_CONF_PROJECT_ROOT_DIR}/externals/libcurl/include/"
+        "${USER_CONF_PROJECT_ROOT_DIR}/framework/service/BtAppService/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/framework/service/ServiceDB/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include/nceventsys"
+        "${USER_CONF_PROJECT_ROOT_DIR}/system/handler/nhbase/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/system/handler/include/nhbt"
+        "${USER_CONF_PROJECT_ROOT_DIR}/system/handler/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/framework/base/AppFramework/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/tinyxpath/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/rapidjson/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/spatialite/headers/spatialite"
+        "${USER_CONF_NAVILIB_SRC_DIR}/protofiles"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/navicommon/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/base/eventsys/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/framework/api/idl-generated/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/AppFramework/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/ServiceManager/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/ContentProvider/include"
+        "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/DBHelper/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/stub/voicerecog"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/utility"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/tutorial/include"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/testphoneinfo"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+        "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+        )
+
+
+SET(PRIVATE_RECOG_SRC_LIST
+    "${USER_CONF_NAVILIB_SRC_DIR}/stub/voice/voicerecog/VoiceRecogService.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/stub/voice/voicerecog/VoiceRecogSDLStubImpl.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/stub/voice/voicerecog/VoiceRecogMMStubImpl.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/stub/voice/voicerecog/VoiceRecogStubImpl.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/stub/voice/voicerecog/VoiceRecogiAutoProxyStubImpl.cpp"
+#    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/tutorial/VR_NCTutorialInfoDatabaseHelper.cpp"
+#    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/tutorial/VR_NCTutorialInfoProvider.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/testphoneinfo/VR_NCPhoneInfoDatabaseHelper.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/testphoneinfo/VR_NCPhoneInfoProvider.cpp"
+        
+    )
+
+
+IF(USER_CONF_TARGET_PRODUCT MATCHES "android")
+SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST}
+    )
+ELSE()
+SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST}
+    )
+ENDIF()
+
+SET(PRIVATE_MODULE_NAME libvoicerecog-stub-navi)
+
+PROJECT (${PRIVATE_MODULE_NAME})
+
+#Clear the private var
+g_func_clear_private_var()
+
+#Set build flags and link libs
+SET(PRIVATE_MODULE_TYPE "SHARED")
+
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_RECOG_C_FLAGS})
+SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS})
+SET(PRIVATE_MODULE_LINK_FLAGS ${PRIVATE_RECOG_LINK_FLAGS})
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES})
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES})
+
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_RECOG_INC_LIST})
+
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_RECOG_SRC_LIST})
+
+#add headfiles
+add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog")
+
+#Build this module
+g_func_build_module()

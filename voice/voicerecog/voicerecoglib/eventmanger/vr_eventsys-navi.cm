@@ -1,0 +1,102 @@
+SET(PRIVATE_RECOG_C_FLAGS ${NAVI_GLOBAL_CFLAGS} "-DIPC_MESSAGE_IMPL" "-DCOMPILER_GCC_SMT")
+IF (NUTSHELL)
+    SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-std=c++11")
+ELSEIF (LINUX_NATIVEX86_SHELL)
+    SET(PRIVATE_RECOG_CXX_FLAGS ${NAVI_GLOBAL_CPPFLAGS} "-std=c++11 -fPIC -DHAVE_LINUX_NATIVEX86")
+ENDIF()
+SET(PRIVATE_RECOG_LINK_FLAGS "")
+
+#STATIC LIBRARY DEPENDENT DECLARE
+SET(PRIVATE_RECOG_LINK_STATIC_LIBRARIES 
+    "libprotobufhelp-navi")
+
+#SHARE LIBRARY DEPENDENT DECLARE
+SET(PRIVATE_RECOG_LINK_SHARED_LIBRARIES
+    "libeventsyscore-navi"
+    "libeventfactory-navi"
+    "libpugixml-navi"
+    "libvr_configure-navi"
+    "libaplcommon-navi")
+
+SET(PRIVATE_RECOG_INC_LIST ${NAVI_BASE_INC}
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/ContentProvider/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/navi/base/commonlib/include/"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/base/AppFramework/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/policy/AVManager/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/MediaProvider/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/protobuf/src"
+    "${USER_CONF_PROJECT_ROOT_DIR}/externals/libcurl/include/"
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/core/include/nceventsys"
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/handler/nhbase/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/system/evip/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/framework/base/AppFramework/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/service/SystemServer/include"
+    "${USER_CONF_PROJECT_ROOT_DIR}/platform/base/DBHelper/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/tinyxpath/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/boost"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/pugixml"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/rapidjson/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/externals/spatialite/headers/spatialite"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/protofiles"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/navicommon/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/eventsys/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/base/commonlib/aplcommonlib/include/"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicecomm/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/utility"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/publicinc"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/configure/include/"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/action/"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/include" 
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/command/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/tutorial/include"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/dataprovider")
+
+SET(PRIVATE_RECOG_SRC_LIST
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/dialogmanger/src/VR_CommonTool.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_EventHandleIF.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_EventRegisterIF.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_EventSenderIF.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_ProtoMessageRegerIF.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_ProtoMessageSenderIF.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_EngineEventSenderIF.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_EngineMessageRegerIF.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_EngineClientEventSenderIF.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_EngineClientMessageRegerIF.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_TransformXmlToProto.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_TransformXmlToXml.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_TransformProtoToXml.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_EngineEventSender.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_EventSender.cpp"
+    "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_ReceiverCb.cpp")
+
+IF (NUTSHELL)
+    SET(PRIVATE_RECOG_SRC_LIST ${PRIVATE_RECOG_SRC_LIST}
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/src/VR_SettingListener.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/tutorial/VR_NCTutorialXMLBuilder.cpp"
+        "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog/voicerecoglib/eventmanger/tutorial/VR_NCTutorialManager.cpp")
+ENDIF()
+
+#CLEAR PRIVATE MODULE BUILD PARAMETER
+g_func_clear_private_var()
+
+SET(PRIVATE_MODULE_NAME libvoicerecog-eventsys-navi)
+PROJECT (${PRIVATE_MODULE_NAME})
+
+SET(PRIVATE_MODULE_TYPE "STATIC")
+SET(PRIVATE_MODULE_C_FLAGS ${PRIVATE_RECOG_C_FLAGS})
+SET(PRIVATE_MODULE_CXX_FLAGS ${PRIVATE_RECOG_CXX_FLAGS})
+SET(PRIVATE_MODULE_LINK_FLAGS ${PRIVATE_RECOG_LINK_FLAGS})
+SET(PRIVATE_MODULE_LINK_STATIC_LIBRARIES ${PRIVATE_RECOG_LINK_STATIC_LIBRARIES})
+SET(PRIVATE_MODULE_LINK_SHARED_LIBRARIES ${PRIVATE_RECOG_LINK_SHARED_LIBRARIES})
+SET(PRIVATE_MODULE_INC_LIST ${PRIVATE_RECOG_INC_LIST})
+SET(PRIVATE_MODULE_SRC_LIST ${PRIVATE_RECOG_SRC_LIST})
+
+#SET HEADFILE AND SOURCE CODE ADD IN
+add_headfiles_to_srclist_by_dir(PRIVATE_MODULE_SRC_LIST PRIVATE_MODULE_INC_LIST "${USER_CONF_NAVILIB_SRC_DIR}/voice/voice/voicerecog")
+
+#BUILD TARGET
+g_func_build_module()
